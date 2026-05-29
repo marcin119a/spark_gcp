@@ -26,6 +26,13 @@ class ETLConfig(BaseModel):
         return v
 
 
+class MLConfig(BaseModel):
+    train_ratio: float = 0.8
+    num_trees: int = 50
+    max_depth: int = 5
+    model_path: str | None = None  # None → krok ML pominięty
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -36,6 +43,7 @@ class Settings(BaseSettings):
 
     spark: SparkConfig = SparkConfig()
     etl: ETLConfig
+    ml: MLConfig = MLConfig()
 
 
 def get_settings() -> Settings:

@@ -2,9 +2,10 @@ import glob
 import os
 
 import pandas as pd
+from pyspark.ml import PipelineModel
 from pyspark.sql import DataFrame
 
-from us_accidents_etl.config.settings import ETLConfig
+from us_accidents_etl.config.settings import ETLConfig, MLConfig
 
 GCS_TEMP_BASE = "gs://plated-observer-474112-k0-airflow-spark-course-dags/temp_csv"
 
@@ -27,6 +28,11 @@ def write_dataset(df: DataFrame, local_path: str, gcs_temp_path: str) -> None:
         # Server writes CSV parts to GCS, client downloads via gcsfs + pandas
         df.write.mode("overwrite").option("header", "true").csv(gcs_temp_path)
         _gcs_csv_to_local_parquet(gcs_temp_path, local_path)
+
+
+def write_model(model: PipelineModel, cfg: MLConfig) -> None:
+    if cfg.model_path:
+        model.write().overwrite().save(cfg.model_path)
 
 
 def write_filtered(df: DataFrame, cfg: ETLConfig) -> None:
