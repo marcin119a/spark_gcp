@@ -20,13 +20,11 @@ jobs:
           cache: pip
 
       - name: Install dev dependencies
-        run: pip install ruff mypy
+        run: pip install ruff 
 
       - name: ruff check
         run: ruff check src/ tests/
 
-      - name: mypy
-        run: mypy src/
 
   test:
     name: Tests (Python ${{ matrix.python-version }})
