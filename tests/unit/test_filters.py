@@ -42,10 +42,10 @@ def test_filter_weather_conditions_keeps_only_listed(
 
 def test_apply_etl_filters_combines_both(spark: SparkSession, etl_cfg: ETLConfig):
     data = [
-        (2, "Rain"),   # filtered: severity too low
+        (2, "Rain"),  # filtered: severity too low
         (3, "Clear"),  # filtered: wrong weather
-        (3, "Rain"),   # kept
-        (4, "Snow"),   # kept
+        (3, "Rain"),  # kept
+        (4, "Snow"),  # kept
     ]
     df = spark.createDataFrame(data, ["Severity", "Weather_Condition"])
     result = apply_etl_filters(df, etl_cfg)

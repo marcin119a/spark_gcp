@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class SparkConfig(BaseModel):
     master: str = "local[*]"
-    remote: str | None = None          # sc://host:port — enables Spark Connect
+    remote: str | None = None  # sc://host:port — enables Spark Connect
     authenticate_secret: str | None = None
     app_name: str = "us-accidents-etl"
     executor_memory: str = "4g"
@@ -13,7 +13,7 @@ class SparkConfig(BaseModel):
 
 
 class ETLConfig(BaseModel):
-    input_path: str   # gs://bucket/raw/US_Accidents_March23.csv
+    input_path: str  # gs://bucket/raw/US_Accidents_March23.csv
     output_path: str  # gs://bucket/processed/us_accidents
     min_severity: int = 3
     weather_conditions: list[str] = ["Rain", "Snow"]
@@ -47,4 +47,4 @@ class Settings(BaseSettings):
 
 
 def get_settings() -> Settings:
-    return Settings()
+    return Settings()  # type: ignore[call-arg]

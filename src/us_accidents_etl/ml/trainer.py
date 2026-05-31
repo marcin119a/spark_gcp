@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Literal
 
 from pyspark.ml import Pipeline, PipelineModel
 from pyspark.ml.classification import RandomForestClassifier
@@ -54,10 +55,9 @@ def build_pipeline(cfg: MLConfig) -> Pipeline:
         inputCol="Severity", outputCol="label", handleInvalid="keep"
     )
 
-    feature_cols = (
-        [f"{c}_idx" for c in CATEGORICAL_FEATURES]
-        + [f"{c}_imp" for c in NUMERIC_FEATURES]
-    )
+    feature_cols = [f"{c}_idx" for c in CATEGORICAL_FEATURES] + [
+        f"{c}_imp" for c in NUMERIC_FEATURES
+    ]
     assembler = VectorAssembler(
         inputCols=feature_cols, outputCol="features", handleInvalid="keep"
     )
@@ -81,8 +81,10 @@ def train(df: DataFrame, cfg: MLConfig) -> tuple[PipelineModel, ModelMetrics]:
     model = build_pipeline(cfg).fit(train_df)
     predictions = model.transform(test_df)
 
-    def _eval(metric: str) -> float:
-        return MulticlassClassificationEvaluator(metricName=metric).evaluate(predictions)
+    def _eval(metric: Literal["accuracy", "f1"]) -> float:
+        return MulticlassClassificationEvaluator(metricName=metric).evaluate(
+            predictions
+        )
 
     metrics = ModelMetrics(
         accuracy=_eval("accuracy"),

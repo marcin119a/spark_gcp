@@ -1,7 +1,6 @@
-import glob
 import os
 
-import pandas as pd
+import pandas as pd  # type: ignore[import-untyped]
 from pyspark.ml import PipelineModel
 from pyspark.sql import DataFrame
 
@@ -50,7 +49,9 @@ def write_aggregations(
     agg_base = f"{cfg.output_path}/agg"
     gcs_base = f"{GCS_TEMP_BASE}/agg"
     write_dataset(severity, f"{agg_base}/severity_stats", f"{gcs_base}/severity_stats")
-    write_dataset(states,   f"{agg_base}/state_stats",    f"{gcs_base}/state_stats")
-    write_dataset(cities,   f"{agg_base}/city_stats",     f"{gcs_base}/city_stats")
-    write_dataset(weather,  f"{agg_base}/weather_stats",  f"{gcs_base}/weather_stats")
-    write_dataset(day_night, f"{agg_base}/day_night_stats", f"{gcs_base}/day_night_stats")
+    write_dataset(states, f"{agg_base}/state_stats", f"{gcs_base}/state_stats")
+    write_dataset(cities, f"{agg_base}/city_stats", f"{gcs_base}/city_stats")
+    write_dataset(weather, f"{agg_base}/weather_stats", f"{gcs_base}/weather_stats")
+    write_dataset(
+        day_night, f"{agg_base}/day_night_stats", f"{gcs_base}/day_night_stats"
+    )
