@@ -4,7 +4,7 @@ from pyspark.sql import SparkSession
 
 from us_accidents_etl.config.settings import Settings
 from us_accidents_etl.extract.reader import read_accidents_csv
-from us_accidents_etl.load.writer import write_aggregations, write_filtered, write_model
+from us_accidents_etl.load.writer import write_aggregations, write_filtered
 from us_accidents_etl.transform import aggregations as agg
 from us_accidents_etl.transform.enrichments import enrich
 from us_accidents_etl.transform.filters import apply_etl_filters
@@ -47,6 +47,6 @@ def run(spark: SparkSession, settings: Settings) -> None:
         enriched_raw = enrich(raw_df)
         model, metrics = train_model(enriched_raw, settings.ml)
         logger.info("Model trained — %s", metrics)
-        write_model(model, settings.ml)
+        model.write().overwrite().save(settings.ml.model_path)
 
     logger.info("ETL completed")
