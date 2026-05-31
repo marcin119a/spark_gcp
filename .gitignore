@@ -18,6 +18,10 @@ venv/
 env/
 .env/
 
+# Conda
+.conda/
+conda-meta/
+
 # Environment variables
 .env
 .env.local
@@ -26,14 +30,21 @@ env/
 # Testing
 .pytest_cache/
 .coverage
+.coverage.*
 htmlcov/
 .tox/
 .mypy_cache/
+junit*.xml
 
 # Spark
 derby.log
 metastore_db/
 spark-warehouse/
+*.log
+
+# MLflow
+mlruns/
+mlartifacts/
 
 # IDE
 .idea/
@@ -42,9 +53,12 @@ spark-warehouse/
 
 # macOS
 .DS_Store
+.DS_Store?
+._*
 
 # Data files
 *.csv
 *.parquet
 *.json
 data/
+output/
