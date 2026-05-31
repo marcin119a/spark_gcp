@@ -1,4 +1,4 @@
-.PHONY: install run test lint format clean
+.PHONY: install conda-create conda-update run test lint format clean
 
 VENV = .venv
 PY   = $(VENV)/bin/python
@@ -11,6 +11,14 @@ install:
 	$(PIP) install -r requirements.txt
 	$(PIP) install -e .
 	@echo "Run: source $(VENV)/bin/activate"
+
+# ── Conda ──────────────────────────────────────────────────────────────────────
+conda-create:
+	conda env create -f environment.yml
+	@echo "Run: conda activate us-accidents-etl"
+
+conda-update:
+	conda env update -f environment.yml --prune
 
 # ── Run ────────────────────────────────────────────────────────────────────────
 run:
